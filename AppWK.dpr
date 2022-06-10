@@ -23,7 +23,6 @@ begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TfrmMain, frmMain);
-  Application.CreateForm(TfrmInput, frmInput);
   Application.CreateForm(TdtmPrincipal, dtmPrincipal);
   Application.Run;
 end.
