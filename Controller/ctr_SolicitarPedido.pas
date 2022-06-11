@@ -59,10 +59,12 @@ begin
     if (inputPedido.ShowModal() = 1) then
     begin
       if StrToIntDef(inputPedido.edtNuPedido.Text, 0) <= 0 then
-        raise Exception.Create('Erro, número do pedido inválido.');
+        raise Exception.Create('Erro, nÃºmero do pedido invÃ¡lido.');
 
 
       Pedido := TDAOPedido.GetPedido(StrToIntDef(inputPedido.edtNuPedido.Text, 0));
+      if Pedido = nil then
+        raise Exception.Create('Erro, Pedido nÃ£o encontrado.');
       FPedido.Assign(Pedido);
       CarregarPedido;
 
@@ -95,7 +97,7 @@ begin
       pedido := TPedido.Create;
       pedido.nu_pedido := StrToIntDef(inputPedido.edtNuPedido.Text, 0);
       if pedido.nu_pedido <= 0 then
-        raise Exception.Create('Erro, número do pedido inválido.');
+        raise Exception.Create('Erro, nÃºmero do pedido invÃ¡lido.');
 
 
 
@@ -148,19 +150,19 @@ begin
   if StrToIntDef(FView.edtCodProduto.Text, 0) <= 0 then
   begin
     FView.edtCodProduto.SetFocus;
-    raise Exception.Create('Digite um código de produto válido.');
+    raise Exception.Create('Digite um cÃ³digo de produto vÃ¡lido.');
   end;
 
   if StrToCurrDef(FView.edtQuantidade.Text, 0) <= 0 then
   begin
     FView.edtQuantidade.SetFocus;
-    raise Exception.Create('Digite uma quantidade válida.' + sLineBreak + ' Ex.: 10,6');
+    raise Exception.Create('Digite uma quantidade vÃ¡lida.' + sLineBreak + ' Ex.: 10,6');
   end;
 
   if StrToCurrDef(FView.edtVlUnitario.Text, 0) <= 0 then
   begin
     FView.edtVlUnitario.SetFocus;
-    raise Exception.Create('Digite um valor válido.' + sLineBreak + ' Ex.: 10,6');
+    raise Exception.Create('Digite um valor vÃ¡lido.' + sLineBreak + ' Ex.: 10,6');
   end;
 
   if indexEditItem <= 0 then
@@ -237,13 +239,13 @@ begin
   }
 
   FView.GridItem.RowCount := FPedido.lista_item.Count + 1;
-  FView.GridItem.Cols[0].Text := 'Código Produto';
+  FView.GridItem.Cols[0].Text := 'CÃ³digo Produto';
   FView.GridItem.ColWidths[0] := 120;
-  FView.GridItem.Cols[1].Text := 'Descrição do Produto';
+  FView.GridItem.Cols[1].Text := 'DescriÃ§Ã£o do Produto';
   FView.GridItem.ColWidths[1] := 120;
   FView.GridItem.Cols[2].Text := 'Quantidade';
   FView.GridItem.ColWidths[2] := 90;
-  FView.GridItem.Cols[3].Text := 'Vlr. unitário';
+  FView.GridItem.Cols[3].Text := 'Vlr. unitÃ¡rio';
   FView.GridItem.ColWidths[3] := 90;
   FView.GridItem.Cols[4].Text := 'Vlr. Total';
   FView.GridItem.ColWidths[4] := 90;
@@ -307,14 +309,14 @@ begin
   try
     id_cliente := StrToInt(FView.edtCodCliente.Text);
   except
-    raise Exception.Create('Erro, Código do cliente inválido.');
+    raise Exception.Create('Erro, CÃ³digo do cliente invÃ¡lido.');
   end;
 
 
   FPedido.cliente := TDAOCliente.GetCliente(id_cliente);
 
   if FPedido.cliente = nil then
-    raise Exception.Create('Erro, cliente não encontrado.');
+    raise Exception.Create('Erro, cliente nÃ£o encontrado.');
 
 
 end;
@@ -332,7 +334,7 @@ begin
   try
     id_produto := StrToInt(FView.edtCodProduto.Text);
   except
-    raise Exception.Create('Erro, Código do produto inválido.');
+    raise Exception.Create('Erro, CÃ³digo do produto invÃ¡lido.');
   end;
 
 
@@ -341,7 +343,7 @@ begin
     produto := TDAOProduto.GetProduto(id_produto);
 
     if produto = nil then
-      raise Exception.Create('Erro, cliente não encontrado.');
+      raise Exception.Create('Erro, produto nÃ£o encontrado.');
 
     FView.edtVlUnitario.Text := CurrToStr(produto.vl_preco_venda);
 
